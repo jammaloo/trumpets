@@ -1302,14 +1302,7 @@ try { synth.init(); synth.loadSamples(); } catch(e) {}
 // Pre-load Ode to Joy data so the button appears highlighted
 loadDemo('ode');
 
-// Try to load the built-in MIDI
-fetch('midis/odetojoy.mid')
-  .then(r => r.arrayBuffer())
-  .then(buf => {
-    const file = new File([buf], 'odetojoy.mid');
-    loadMidiFile(file);
-  })
-  .catch(() => {});
+
 </script>
 </body>
 </html>
