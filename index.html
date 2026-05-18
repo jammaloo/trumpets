@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎵 The Butt Philharmonic 🎵</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 50%, #1a2a1a 100%);
+    min-height: 100vh;
+    color: #fff;
+    overflow-x: hidden;
+  }
+
+  .app {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 30px 0 20px;
+  }
+  .header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 3rem;
+    background: linear-gradient(to right, #ff6b6b, #ffd93d, #6bcb77, #4d96ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+    text-shadow: none;
+  }
+  .header p {
+    color: #b8a9c9;
+    font-size: 1.1rem;
+    font-style: italic;
+  }
+
+  /* Controls */
+  .controls {
+    background: rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .upload-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .file-upload {
+    position: relative;
+    overflow: hidden;
+  }
+  .file-upload input[type="file"] {
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .file-upload label {
+    display: inline-block;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #6bcb77, #4d96ff);
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .file-upload label:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(75, 150, 255, 0.4);
+  }
+
+  .demos {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .demo-btn {
+    padding: 10px 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    color: #ddd;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+  }
+  .demo-btn:hover {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .playback-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .play-btn {
+    padding: 14px 32px;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .play-btn.play {
+    background: linear-gradient(135deg, #6bcb77, #2d8f3e);
+    color: white;
+  }
+  .play-btn.stop {
+    background: linear-gradient(135deg, #ff6b6b, #c92a2a);
+    color: white;
+  }
+  .play-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  .play-btn:not(:disabled):hover {
+    transform: scale(1.05);
+  }
+
+  .progress-container {
+    flex: 1;
+    min-width: 200px;
+    max-width: 500px;
+  }
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, #6bcb77, #4d96ff);
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+  .time-display {
+    font-size: 0.85rem;
+    color: #999;
+    margin-top: 4px;
+    text-align: center;
+  }
+
+  .volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .volume-control span { font-size: 1.2rem; }
+  .volume-slider {
+    -webkit-appearance: none;
+    width: 80px;
+    height: 6px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 3px;
+    outline: none;
+  }
+  .volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #6bcb77;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .file-info {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: #8a7fa8;
+  }
+
+  /* Stage */
+  .stage {
+    background: linear-gradient(180deg, rgba(60,20,80,0.3) 0%, rgba(30,15,40,0.5) 100%);
+    border-radius: 20px;
+    padding: 40px 20px 30px;
+    margin: 20px 0;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.05);
+    min-height: 350px;
+    overflow: hidden;
+  }
+  .stage::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(180deg, transparent, rgba(139,90,43,0.3));
+    pointer-events: none;
+  }
+
+  .stage-title {
+    text-align: center;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: #b8a9c9;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .butt-orchestra {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    align-items: flex-end;
+  }
+
+  /* Individual Butt */
+  .butt-performer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.1s;
+  }
+
+  .butt-performer .name {
+    font-size: 0.75rem;
+    color: #8a7fa8;
+    text-align: center;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  .butt-body {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+
+  .butt-body:hover {
+    transform: scale(1.08);
+  }
+
+  .butt-body .cheeks {
+    position: relative;
+    display: flex;
+    gap: 2px;
+  }
+
+  .butt-body .cheek {
+    border-radius: 50%;
+    position: relative;
+    transition: transform 0.15s;
+  }
+
+  .butt-body .cheek.left {
+    border-radius: 50% 45% 50% 40%;
+  }
+  .butt-body .cheek.right {
+    border-radius: 45% 50% 40% 50%;
+  }
+
+  /* Size variants */
+  .butt-performer.sm .cheek { width: 28px; height: 32px; }
+  .butt-performer.md .cheek { width: 35px; height: 40px; }
+  .butt-performer.lg .cheek { width: 42px; height: 48px; }
+  .butt-performer.xl .cheek { width: 50px; height: 56px; }
+
+  .butt-performer .shadow {
+    width: 70%;
+    height: 6px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    margin: 2px auto 0;
+    transition: transform 0.15s;
+  }
+
+  /* Farting animation */
+  .butt-performer.farting .butt-body {
+    animation: fart-jiggle 0.3s ease-out;
+  }
+  .butt-performer.farting .cheek.left {
+    animation: cheek-left 0.3s ease-out;
+  }
+  .butt-performer.farting .cheek.right {
+    animation: cheek-right 0.3s ease-out;
+  }
+  .butt-performer.farting .shadow {
+    animation: shadow-pulse 0.3s ease-out;
+  }
+
+  @keyframes fart-jiggle {
+    0% { transform: translateY(0); }
+    15% { transform: translateY(-6px) rotate(-3deg); }
+    30% { transform: translateY(-3px) rotate(2deg); }
+    45% { transform: translateY(-4px) rotate(-1deg); }
+    60% { transform: translateY(-1px) rotate(1deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+  }
+  @keyframes cheek-left {
+    0%, 100% { transform: scale(1); }
+    30% { transform: scale(1.15, 1.05) translateX(-2px); }
+  }
+  @keyframes cheek-right {
+    0%, 100% { transform: scale(1); }
+    30% { transform: scale(1.15, 1.05) translateX(2px); }
+  }
+  @keyframes shadow-pulse {
+    0%, 100% { transform: scaleX(1); opacity: 0.3; }
+    30% { transform: scaleX(1.3); opacity: 0.5; }
+  }
+
+  /* Gas particles */
+  .gas-container {
+    position: absolute;
+    bottom: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    width: 0;
+    height: 0;
+  }
+  .gas-particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: gas-float 0.8s ease-out forwards;
+  }
+  @keyframes gas-float {
+    0% {
+      opacity: 0.7;
+      transform: translate(var(--dx), 0) scale(0.3);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(calc(var(--dx) * 2), -70px) scale(1.8);
+    }
+  }
+
+  /* Note popup */
+  .note-popup {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    animation: note-rise 0.6s ease-out forwards;
+    pointer-events: none;
+  }
+  @keyframes note-rise {
+    0% { opacity: 1; transform: translateX(-50%) translateY(0) scale(0.5); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-50px) scale(1.2); }
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    color: #555;
+    font-size: 0.8rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .header h1 { font-size: 2rem; }
+    .butt-orchestra { gap: 12px; }
+    .butt-performer.sm .cheek { width: 22px; height: 26px; }
+    .butt-performer.md .cheek { width: 28px; height: 32px; }
+    .butt-performer.lg .cheek { width: 35px; height: 40px; }
+    .butt-performer.xl .cheek { width: 42px; height: 48px; }
+  }
+
+  /* Music notes floating background */
+  .bg-notes {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .bg-note {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.04;
+    animation: float-note 20s linear infinite;
+  }
+  @keyframes float-note {
+    0% { transform: translateY(100vh) rotate(0deg); }
+    100% { transform: translateY(-100px) rotate(360deg); }
+  }
+
+  .app { position: relative; z-index: 1; }
+</style>
+</head>
+<body>
+
+<div class="bg-notes" id="bgNotes"></div>
+
+<div class="app">
+  <div class="header">
+    <h1>🍑 The Butt Philharmonic 🎵</h1>
+    <p>A world-class ensemble of musical flatulence</p>
+  </div>
+
+  <div class="controls">
+    <div class="upload-section">
+      <div class="file-upload">
+        <label>📁 Upload MIDI</label>
+        <input type="file" id="midiFile" accept=".mid,.midi">
+      </div>
+      <div class="demos">
+        <button class="demo-btn" onclick="loadDemo('twinkle')">⭐ Twinkle Twinkle</button>
+        <button class="demo-btn" onclick="loadDemo('ode')">🎶 Ode to Joy</button>
+        <button class="demo-btn" onclick="loadDemo('fur')">🎹 Für Elise</button>
+        <button class="demo-btn" onclick="loadDemo('canon')">🎻 Canon in D</button>
+        <button class="demo-btn" onclick="loadDemo('birthday')">🎂 Happy Birthday</button>
+      </div>
+    </div>
+
+    <div class="playback-controls">
+      <button class="play-btn play" id="playBtn" onclick="togglePlay()" disabled>▶ Play</button>
+      <button class="play-btn stop" id="stopBtn" onclick="stopPlayback()" disabled>⏹ Stop</button>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="time-display" id="timeDisplay">0:00 / 0:00</div>
+      </div>
+      <div class="volume-control">
+        <span>🔊</span>
+        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="70">
+      </div>
+    </div>
+
+    <div class="file-info" id="fileInfo">Upload a MIDI file or select a demo to begin</div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-title">🎭 The Performers 🎭</div>
+    <div class="butt-orchestra" id="orchestra"></div>
+  </div>
+
+  <div class="footer">
+    🍑 The Butt Philharmonic — Where every performance is a gas 💨
+  </div>
+</div>
+
+<script>
+// ============================================================
+// MIDI PARSER
+// ============================================================
+function parseMidi(buffer) {
+  const data = new Uint8Array(buffer);
+  let pos = 0;
+
+  function readUint32() {
+    const val = (data[pos] << 24) | (data[pos+1] << 16) | (data[pos+2] << 8) | data[pos+3];
+    pos += 4;
+    return val;
+  }
+  function readUint16() {
+    const val = (data[pos] << 8) | data[pos+1];
+    pos += 2;
+    return val;
+  }
+  function readVarLen() {
+    let val = 0, b;
+    do {
+      b = data[pos++];
+      val = (val << 7) | (b & 0x7F);
+    } while (b & 0x80);
+    return val;
+  }
+  function readString(len) {
+    let s = '';
+    for (let i = 0; i < len; i++) s += String.fromCharCode(data[pos++]);
+    return s;
+  }
+
+  // Header
+  if (readString(4) !== 'MThd') throw new Error('Invalid MIDI file');
+  readUint32(); // header length (always 6)
+  const format = readUint16();
+  const numTracks = readUint16();
+  const timeDivision = readUint16();
+
+  const tracks = [];
+  for (let t = 0; t < numTracks; t++) {
+    if (readString(4) !== 'MTrk') throw new Error('Invalid track');
+    const trackLen = readUint32();
+    const trackEnd = pos + trackLen;
+    const events = [];
+    let absoluteTime = 0;
+    let runningStatus = 0;
+
+    while (pos < trackEnd) {
+      const dt = readVarLen();
+      absoluteTime += dt;
+
+      let statusByte = data[pos];
+      if (statusByte & 0x80) {
+        runningStatus = statusByte;
+        pos++;
+      } else {
+        statusByte = runningStatus;
+      }
+
+      const hi = statusByte & 0xF0;
+      const ch = statusByte & 0x0F;
+
+      if (hi === 0x90) {
+        const note = data[pos++];
+        const vel = data[pos++];
+        events.push(vel > 0
+          ? { type: 'on', note, vel, ch, time: absoluteTime }
+          : { type: 'off', note, ch, time: absoluteTime });
+      } else if (hi === 0x80) {
+        const note = data[pos++];
+        pos++; // vel
+        events.push({ type: 'off', note, ch, time: absoluteTime });
+      } else if (hi === 0xA0 || hi === 0xB0 || hi === 0xE0) {
+        pos += 2;
+      } else if (hi === 0xC0 || hi === 0xD0) {
+        pos += 1;
+      } else if (statusByte === 0xFF) {
+        const metaType = data[pos++];
+        const len = readVarLen();
+        if (metaType === 0x51 && len === 3) {
+          const tempo = (data[pos] << 16) | (data[pos+1] << 8) | data[pos+2];
+          events.push({ type: 'tempo', usPerBeat: tempo, time: absoluteTime });
+        }
+        pos += len;
+      } else if (statusByte === 0xF0 || statusByte === 0xF7) {
+        const len = readVarLen();
+        pos += len;
+      } else {
+        // Unknown - bail
+        pos = trackEnd;
+        break;
+      }
+    }
+    pos = trackEnd;
+    tracks.push(events);
+  }
+
+  return { format, numTracks, timeDivision, tracks };
+}
+
+// Convert parsed MIDI to a flat list of notes with start time and duration in seconds
+function midiToNotes(parsed) {
+  const { timeDivision, tracks } = parsed;
+  const microsecondsPerBeat = 500000; // default 120 BPM
+  const tempoMap = buildTempoMap(tracks, timeDivision);
+
+  // Merge all note events from all tracks
+  const allEvents = [];
+  for (let t = 0; t < tracks.length; t++) {
+    for (const ev of tracks[t]) {
+      if (ev.type === 'on' || ev.type === 'off') {
+        allEvents.push({ ...ev, track: t });
+      }
+    }
+  }
+  allEvents.sort((a, b) => a.time - b.time || (a.type === 'off' ? -1 : 1));
+
+  const activeNotes = {}; // key: "track:note:ch"
+  const notes = [];
+
+  for (const ev of allEvents) {
+    const timeSec = ticksToSeconds(ev.time, tempoMap, timeDivision);
+    if (ev.type === 'on') {
+      const key = `${ev.track}:${ev.note}:${ev.ch}`;
+      // If already active, close the old one
+      if (activeNotes[key]) {
+        const old = activeNotes[key];
+        notes.push({ note: old.note, start: old.startSec, duration: timeSec - old.startSec, vel: old.vel, track: old.track, ch: old.ch });
+      }
+      activeNotes[key] = { note: ev.note, startSec: timeSec, vel: ev.vel, track: ev.track, ch: ev.ch, tickTime: ev.time };
+    } else if (ev.type === 'off') {
+      const key = `${ev.track}:${ev.note}:${ev.ch}`;
+      if (activeNotes[key]) {
+        const on = activeNotes[key];
+        notes.push({ note: on.note, start: on.startSec, duration: Math.max(timeSec - on.startSec, 0.05), vel: on.vel, track: on.track, ch: on.ch });
+        delete activeNotes[key];
+      }
+    }
+  }
+
+  // Close any remaining active notes
+  for (const key of Object.keys(activeNotes)) {
+    const on = activeNotes[key];
+    notes.push({ note: on.note, start: on.startSec, duration: 0.3, vel: on.vel, track: on.track, ch: on.ch });
+  }
+
+  return notes;
+}
+
+function buildTempoMap(tracks, timeDivision) {
+  const tempoEvents = [];
+  for (const track of tracks) {
+    for (const ev of track) {
+      if (ev.type === 'tempo') {
+        tempoEvents.push({ tick: ev.time, usPerBeat: ev.usPerBeat });
+      }
+    }
+  }
+  tempoEvents.sort((a, b) => a.tick - b.tick);
+  if (tempoEvents.length === 0 || tempoEvents[0].tick > 0) {
+    tempoEvents.unshift({ tick: 0, usPerBeat: 500000 });
+  }
+  return tempoEvents;
+}
+
+function ticksToSeconds(ticks, tempoMap, timeDivision) {
+  let seconds = 0;
+  let prevTick = 0;
+  let prevUsPerBeat = tempoMap[0].usPerBeat;
+
+  for (let i = 0; i < tempoMap.length; i++) {
+    const entry = tempoMap[i];
+    if (entry.tick >= ticks) break;
+
+    const startTick = Math.max(entry.tick, prevTick);
+    const endTick = (i + 1 < tempoMap.length && tempoMap[i+1].tick < ticks)
+      ? tempoMap[i+1].tick
+      : ticks;
+
+    if (endTick > startTick) {
+      seconds += (endTick - startTick) * (prevUsPerBeat / (timeDivision * 1000000));
+    }
+    prevTick = endTick;
+    prevUsPerBeat = entry.usPerBeat;
+  }
+
+  // Remaining ticks
+  if (ticks > prevTick) {
+    seconds += (ticks - prevTick) * (prevUsPerBeat / (timeDivision * 1000000));
+  }
+
+  return seconds;
+}
+
+// ============================================================
+// FART SYNTHESIZER
+// ============================================================
+class FartSynth {
+  constructor() {
+    this.ctx = null;
+    this.masterGain = null;
+    this.volume = 0.7;
+  }
+
+  init() {
+    if (this.ctx) return;
+    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    this.masterGain = this.ctx.createGain();
+    this.masterGain.gain.value = this.volume;
+    this.masterGain.connect(this.ctx.destination);
+  }
+
+  setVolume(v) {
+    this.volume = v;
+    if (this.masterGain) this.masterGain.gain.value = v;
+  }
+
+  fart(note, duration, velocity) {
+    if (!this.ctx) return;
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+
+    const freq = 440 * Math.pow(2, (note - 69) / 12);
+    const now = this.ctx.currentTime;
+    const vol = Math.max(0.01, (velocity / 127) * 0.4);
+    const dur = Math.min(Math.max(duration, 0.08), 2.5);
+
+    // Main oscillator — sawtooth for that buzzy quality
+    const osc1 = this.ctx.createOscillator();
+    osc1.type = 'sawtooth';
+    osc1.frequency.setValueAtTime(freq * 0.5, now);
+    osc1.frequency.exponentialRampToValueAtTime(freq * 0.35, now + dur);
+
+    // Sub oscillator — square wave for body
+    const osc2 = this.ctx.createOscillator();
+    osc2.type = 'square';
+    osc2.frequency.setValueAtTime(freq * 0.25, now);
+    osc2.frequency.exponentialRampToValueAtTime(freq * 0.18, now + dur);
+
+    // Flutter LFO for the rippling effect
+    const lfo = this.ctx.createOscillator();
+    lfo.type = 'sine';
+    lfo.frequency.setValueAtTime(15 + Math.random() * 25, now);
+    const lfoGain = this.ctx.createGain();
+    lfoGain.gain.value = freq * 0.1;
+    lfo.connect(lfoGain);
+    lfoGain.connect(osc1.frequency);
+
+    // Noise for the airy/raspy component
+    const bufLen = Math.ceil(this.ctx.sampleRate * dur) + 1000;
+    const noiseBuf = this.ctx.createBuffer(1, bufLen, this.ctx.sampleRate);
+    const noiseData = noiseBuf.getChannelData(0);
+    for (let i = 0; i < bufLen; i++) noiseData[i] = Math.random() * 2 - 1;
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = noiseBuf;
+
+    const noiseFilter = this.ctx.createBiquadFilter();
+    noiseFilter.type = 'bandpass';
+    noiseFilter.frequency.value = freq * 0.8;
+    noiseFilter.Q.value = 1.5;
+
+    // Low-pass filter to keep things from being too harsh
+    const lpf = this.ctx.createBiquadFilter();
+    lpf.type = 'lowpass';
+    lpf.frequency.setValueAtTime(freq * 2, now);
+    lpf.frequency.exponentialRampToValueAtTime(freq * 0.5, now + dur);
+    lpf.Q.value = 1;
+
+    // Gain envelopes
+    const env1 = this.ctx.createGain();
+    env1.gain.setValueAtTime(0, now);
+    env1.gain.linearRampToValueAtTime(vol, now + 0.015);
+    env1.gain.setValueAtTime(vol * 0.85, now + dur * 0.3);
+    env1.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+    const env2 = this.ctx.createGain();
+    env2.gain.setValueAtTime(0, now);
+    env2.gain.linearRampToValueAtTime(vol * 0.4, now + 0.02);
+    env2.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+    const envNoise = this.ctx.createGain();
+    envNoise.gain.setValueAtTime(0, now);
+    envNoise.gain.linearRampToValueAtTime(vol * 0.25, now + 0.01);
+    envNoise.gain.exponentialRampToValueAtTime(0.001, now + dur * 0.4);
+
+    // Connect
+    osc1.connect(lpf);
+    lpf.connect(env1);
+    env1.connect(this.masterGain);
+
+    osc2.connect(env2);
+    env2.connect(this.masterGain);
+
+    noise.connect(noiseFilter);
+    noiseFilter.connect(envNoise);
+    envNoise.connect(this.masterGain);
+
+    // Play
+    const stopTime = now + dur + 0.1;
+    osc1.start(now); osc1.stop(stopTime);
+    osc2.start(now); osc2.stop(stopTime);
+    lfo.start(now); lfo.stop(stopTime);
+    noise.start(now); noise.stop(stopTime);
+  }
+}
+
+// ============================================================
+// BUTT ORCHESTRA (Visual)
+// ============================================================
+const BUTT_NAMES = [
+  'Sir Toots-a-Lot', 'Baron von Pfffft', 'The Maestro', 'Lady Windsworth',
+  'Lord Ripplingham', 'Duchess Poot', 'Count Flatulini', 'Professor Squeaker',
+  'Captain Thunder', 'General Boom', 'The Reverend', 'Sergeant Pfffrt',
+  'Monsieur Le Pew', 'Dr. Rumblebottom', 'Princess Pop', 'Admiral Gusty'
+];
+
+const BUTT_SKIN_COLORS = [
+  '#FFDAB9', '#F5C6A5', '#E8B796', '#D4A078', '#C4916B',
+  '#B58463', '#A67552', '#936648', '#FFB6C1', '#FFC0CB',
+  '#DDA0DD', '#B0E0E6', '#98FB98', '#FFE4B5', '#F0E68C',
+  '#E6E6FA'
+];
+
+const BUTT_SIZES = ['sm', 'md', 'md', 'lg', 'xl'];
+const MUSIC_NOTES = ['🎵', '🎶', '🎼', '♪', '♫', '💨', '☁️'];
+
+let buttElements = [];
+let numButts = 16;
+
+function createOrchestra() {
+  const container = document.getElementById('orchestra');
+  container.innerHTML = '';
+  buttElements = [];
+
+  for (let i = 0; i < numButts; i++) {
+    const sizeClass = BUTT_SIZES[i % BUTT_SIZES.length];
+    const color = BUTT_SKIN_COLORS[i % BUTT_SKIN_COLORS.length];
+    const darkerColor = darkenColor(color, 30);
+
+    const performer = document.createElement('div');
+    performer.className = `butt-performer ${sizeClass}`;
+    performer.dataset.index = i;
+
+    performer.innerHTML = `
+      <div class="butt-body">
+        <div class="gas-container"></div>
+        <div class="cheeks">
+          <div class="cheek left" style="background: linear-gradient(135deg, ${color}, ${darkerColor})"></div>
+          <div class="cheek right" style="background: linear-gradient(225deg, ${color}, ${darkerColor})"></div>
+        </div>
+      </div>
+      <div class="shadow"></div>
+      <div class="name">${BUTT_NAMES[i]}</div>
+    `;
+
+    // Click to test fart
+    performer.addEventListener('click', () => {
+      synth.init();
+      const note = 40 + i * 3;
+      synth.fart(note, 0.3, 100);
+      triggerButtAnimation(i, note);
+    });
+
+    container.appendChild(performer);
+    buttElements.push(performer);
+  }
+}
+
+function darkenColor(hex, amount) {
+  const num = parseInt(hex.slice(1), 16);
+  const r = Math.max(0, (num >> 16) - amount);
+  const g = Math.max(0, ((num >> 8) & 0xFF) - amount);
+  const b = Math.max(0, (num & 0xFF) - amount);
+  return `#${(r << 16 | g << 8 | b).toString(16).padStart(6, '0')}`;
+}
+
+function triggerButtAnimation(index, note) {
+  const el = buttElements[index];
+  if (!el) return;
+
+  // Jiggle animation
+  el.classList.remove('farting');
+  void el.offsetWidth; // force reflow
+  el.classList.add('farting');
+  setTimeout(() => el.classList.remove('farting'), 350);
+
+  // Emit gas particles
+  const gasContainer = el.querySelector('.gas-container');
+  const particleCount = 3 + Math.floor(Math.random() * 4);
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'gas-particle';
+    const dx = (Math.random() - 0.5) * 50;
+    const size = 8 + Math.random() * 16;
+    const hue = 80 + Math.random() * 60; // greenish-yellowish
+    particle.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      background: hsla(${hue}, 50%, 60%, 0.5);
+      --dx: ${dx}px;
+      animation-delay: ${Math.random() * 0.15}s;
+    `;
+    gasContainer.appendChild(particle);
+    setTimeout(() => particle.remove(), 1000);
+  }
+
+  // Musical note popup
+  const noteEl = document.createElement('div');
+  noteEl.className = 'note-popup';
+  noteEl.textContent = MUSIC_NOTES[Math.floor(Math.random() * MUSIC_NOTES.length)];
+  el.querySelector('.butt-body').appendChild(noteEl);
+  setTimeout(() => noteEl.remove(), 700);
+}
+
+function getButtForNote(note, totalNotes) {
+  // Map MIDI note to a butt. Use modulo for wrapping.
+  return note % numButts;
+}
+
+// ============================================================
+// PLAYBACK ENGINE
+// ============================================================
+const synth = new FartSynth();
+let currentNotes = [];
+let isPlaying = false;
+let playbackStartCtxTime = 0;
+let playbackStartTime = 0;
+let totalDuration = 0;
+let scheduledTimeouts = [];
+let songName = '';
+
+function loadMidiFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const parsed = parseMidi(e.target.result);
+      currentNotes = midiToNotes(parsed);
+      totalDuration = currentNotes.length > 0
+        ? Math.max(...currentNotes.map(n => n.start + n.duration))
+        : 0;
+
+      songName = file.name.replace(/\.(mid|midi)$/i, '');
+      document.getElementById('fileInfo').textContent =
+        `📄 ${file.name} — ${currentNotes.length} notes, ${formatTime(totalDuration)} total`;
+      document.getElementById('playBtn').disabled = false;
+      document.getElementById('stopBtn').disabled = false;
+      document.getElementById('progressFill').style.width = '0%';
+      document.getElementById('timeDisplay').textContent = `0:00 / ${formatTime(totalDuration)}`;
+    } catch (err) {
+      document.getElementById('fileInfo').textContent = `❌ Error: ${err.message}`;
+      console.error(err);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// Demo songs: each entry is [note, duration_in_beats], time is accumulated
+const DEMOS = {
+  twinkle: {
+    name: 'Twinkle Twinkle Little Star',
+    notes: [
+      [60,0.4],[60,0.4],[67,0.4],[67,0.4],[69,0.4],[69,0.4],[67,0.8],
+      [65,0.4],[65,0.4],[64,0.4],[64,0.4],[62,0.4],[62,0.4],[60,0.8],
+      [67,0.4],[67,0.4],[65,0.4],[65,0.4],[64,0.4],[64,0.4],[62,0.8],
+      [67,0.4],[67,0.4],[65,0.4],[65,0.4],[64,0.4],[64,0.4],[62,0.8],
+      [60,0.4],[60,0.4],[67,0.4],[67,0.4],[69,0.4],[69,0.4],[67,0.8],
+      [65,0.4],[65,0.4],[64,0.4],[64,0.4],[62,0.4],[62,0.4],[60,0.8],
+    ]
+  },
+  ode: {
+    name: 'Ode to Joy',
+    notes: [
+      [64,0.5],[64,0.5],[65,0.5],[67,0.5],[67,0.5],[65,0.5],[64,0.5],[62,0.5],
+      [60,0.5],[60,0.5],[62,0.5],[64,0.5],[64,0.75],[62,0.25],[62,1],
+      [64,0.5],[64,0.5],[65,0.5],[67,0.5],[67,0.5],[65,0.5],[64,0.5],[62,0.5],
+      [60,0.5],[60,0.5],[62,0.5],[64,0.5],[62,0.75],[60,0.25],[60,1],
+      [62,0.5],[62,0.5],[64,0.5],[60,0.5],[62,0.5],[64,0.25],[65,0.25],[64,0.5],[60,0.5],
+      [62,0.5],[64,0.25],[65,0.25],[64,0.5],[60,0.5],[62,0.5],[64,0.25],[60,0.25],
+      [60,0.5],[62,0.5],[60,1],
+    ]
+  },
+  fur: {
+    name: 'Für Elise',
+    notes: [
+      [76,0.25],[75,0.25],[76,0.25],[75,0.25],[76,0.25],[71,0.25],[74,0.25],[72,0.25],[69,0.5],
+      [60,0.25],[64,0.25],[69,0.25],[71,0.5],
+      [61,0.25],[65,0.25],[71,0.25],[72,0.5],
+      [72,0.25],[76,0.25],[75,0.25],[76,0.25],[75,0.25],[76,0.25],[71,0.25],[74,0.25],[72,0.25],[69,0.5],
+      [60,0.25],[64,0.25],[69,0.25],[71,0.5],
+      [61,0.25],[65,0.25],[71,0.25],[72,0.5],
+      [72,0.25],[64,0.25],[72,0.25],[71,0.25],[69,0.25],
+      [71,0.25],[72,0.25],[74,0.25],[76,0.5],
+      [67,0.25],[74,0.25],[72,0.25],[71,0.5],
+      [69,0.25],[71,0.25],[72,0.25],[76,0.5],
+      [76,0.25],[72,0.25],[74,0.25],[72,0.25],[71,0.25],[69,0.5],
+    ]
+  },
+  canon: {
+    name: 'Canon in D',
+    notes: [
+      [74,0.5],[73,0.5],[71,0.5],[69,0.5],[67,0.5],[66,0.5],[67,0.5],[69,0.5],
+      [71,0.5],[69,0.5],[71,0.5],[73,0.5],[74,0.5],[73,0.5],[71,0.5],[69,0.5],
+      [67,0.5],[66,0.5],[64,0.5],[66,0.5],[67,0.5],[69,0.5],[71,0.5],[67,0.5],
+      [69,0.5],[66,0.5],[67,0.5],[64,0.5],[62,0.5],[64,0.5],[66,0.5],[67,0.5],
+      [69,0.5],[71,0.5],[73,0.5],[74,0.5],[76,0.5],[74,0.5],[73,0.5],[71,0.5],
+      [69,0.5],[67,0.5],[69,0.5],[66,0.5],[67,0.5],[64,0.5],[62,0.5],[64,0.5],
+    ]
+  },
+  birthday: {
+    name: 'Happy Birthday',
+    notes: [
+      [67,0.3],[67,0.15],[69,0.45],[67,0.45],[72,0.45],[71,0.9],
+      [67,0.3],[67,0.15],[69,0.45],[67,0.45],[74,0.45],[72,0.9],
+      [67,0.3],[67,0.15],[79,0.45],[76,0.45],[72,0.45],[71,0.45],[69,0.9],
+      [77,0.3],[77,0.15],[76,0.45],[72,0.45],[74,0.45],[72,1.2],
+    ]
+  },
+};
+
+function loadDemo(key) {
+  const demo = DEMOS[key];
+  if (!demo) return;
+
+  currentNotes = [];
+  let time = 0;
+  for (const entry of demo.notes) {
+    const note = entry[0];
+    const dur = entry[1];
+    currentNotes.push({
+      note,
+      start: time,
+      duration: Math.max(dur * 0.85, 0.06),
+      vel: 80 + Math.random() * 40,
+      track: 0,
+      ch: 0
+    });
+    time += dur;
+  }
+
+  totalDuration = time;
+  songName = demo.name;
+  document.getElementById('fileInfo').textContent =
+    `🎵 ${demo.name} — ${currentNotes.length} notes, ${formatTime(totalDuration)} total`;
+  document.getElementById('playBtn').disabled = false;
+  document.getElementById('stopBtn').disabled = false;
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('timeDisplay').textContent = `0:00 / ${formatTime(totalDuration)}`;
+}
+
+function togglePlay() {
+  if (isPlaying) {
+    pausePlayback();
+  } else {
+    startPlayback();
+  }
+}
+
+let pauseOffset = 0;
+
+function startPlayback() {
+  if (currentNotes.length === 0) return;
+
+  synth.init();
+  isPlaying = true;
+
+  const btn = document.getElementById('playBtn');
+  btn.textContent = '⏸ Pause';
+  btn.classList.remove('play');
+  btn.classList.add('stop');
+
+  playbackStartTime = pauseOffset;
+  playbackStartCtxTime = synth.ctx.currentTime;
+
+  // Schedule all notes
+  for (const note of currentNotes) {
+    const delay = (note.start - playbackStartTime);
+    if (delay < -0.1) continue; // Already past
+
+    // Schedule sound
+    const actualDelay = Math.max(0, delay);
+    const tid = setTimeout(() => {
+      if (!isPlaying) return;
+      synth.fart(note.note, note.duration, note.vel);
+      triggerButtAnimation(getButtForNote(note.note), note.note);
+    }, actualDelay * 1000);
+    scheduledTimeouts.push(tid);
+  }
+
+  // Schedule progress updates
+  requestAnimationFrame(updateProgress);
+}
+
+function updateProgress() {
+  if (!isPlaying) return;
+
+  const elapsed = synth.ctx.currentTime - playbackStartCtxTime + playbackStartTime;
+  const pct = totalDuration > 0 ? Math.min(100, (elapsed / totalDuration) * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('timeDisplay').textContent = `${formatTime(elapsed)} / ${formatTime(totalDuration)}`;
+
+  if (elapsed >= totalDuration + 0.5) {
+    stopPlayback();
+    return;
+  }
+
+  requestAnimationFrame(updateProgress);
+}
+
+function pausePlayback() {
+  isPlaying = false;
+  pauseOffset = synth.ctx.currentTime - playbackStartCtxTime + playbackStartTime;
+  clearScheduled();
+  const btn = document.getElementById('playBtn');
+  btn.textContent = '▶ Resume';
+  btn.classList.add('play');
+  btn.classList.remove('stop');
+}
+
+function stopPlayback() {
+  isPlaying = false;
+  pauseOffset = 0;
+  clearScheduled();
+  const btn = document.getElementById('playBtn');
+  btn.textContent = '▶ Play';
+  btn.classList.add('play');
+  btn.classList.remove('stop');
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('timeDisplay').textContent = `0:00 / ${formatTime(totalDuration)}`;
+}
+
+function clearScheduled() {
+  for (const tid of scheduledTimeouts) clearTimeout(tid);
+  scheduledTimeouts = [];
+}
+
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+// ============================================================
+// UI WIRING
+// ============================================================
+document.getElementById('midiFile').addEventListener('change', (e) => {
+  if (e.target.files.length > 0) {
+    stopPlayback();
+    loadMidiFile(e.target.files[0]);
+  }
+});
+
+document.getElementById('volumeSlider').addEventListener('input', (e) => {
+  synth.init();
+  synth.setVolume(e.target.value / 100);
+});
+
+// Click on progress bar to seek
+document.getElementById('progressBar').addEventListener('click', (e) => {
+  if (totalDuration === 0) return;
+  const rect = e.target.getBoundingClientRect();
+  const pct = (e.clientX - rect.left) / rect.width;
+  const seekTime = pct * totalDuration;
+
+  const wasPlaying = isPlaying;
+  if (isPlaying) {
+    stopPlayback();
+  }
+  pauseOffset = seekTime;
+  document.getElementById('progressFill').style.width = (pct * 100) + '%';
+  document.getElementById('timeDisplay').textContent = `${formatTime(seekTime)} / ${formatTime(totalDuration)}`;
+
+  if (wasPlaying) {
+    startPlayback();
+  }
+});
+
+// Floating background notes
+function createBgNotes() {
+  const container = document.getElementById('bgNotes');
+  const symbols = ['♪', '♫', '♬', '🎵', '🎶', '🍑', '💨', '🎼'];
+  for (let i = 0; i < 20; i++) {
+    const note = document.createElement('div');
+    note.className = 'bg-note';
+    note.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    note.style.left = Math.random() * 100 + '%';
+    note.style.animationDelay = Math.random() * 20 + 's';
+    note.style.animationDuration = (15 + Math.random() * 20) + 's';
+    container.appendChild(note);
+  }
+}
+
+// Init
+createOrchestra();
+createBgNotes();
+
+// Try to load the built-in MIDI
+fetch('midis/odetojoy.mid')
+  .then(r => r.arrayBuffer())
+  .then(buf => {
+    const file = new File([buf], 'odetojoy.mid');
+    loadMidiFile(file);
+  })
+  .catch(() => {});
+</script>
+</body>
+</html>
