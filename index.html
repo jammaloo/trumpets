@@ -1134,7 +1134,6 @@ function loadDemo(key) {
 }
 
 function selectDemo(key) {
-  autoPlayed = true; // prevent auto-play from overriding this click
   stopPlayback();
   loadDemo(key);
   startPlayback();
@@ -1299,15 +1298,6 @@ document.addEventListener('touchstart', preloadSamples, { once: false });
 // Also try loading immediately (works if AudioContext is already allowed)
 try { synth.init(); synth.loadSamples(); } catch(e) {}
 
-// Auto-select and play Ode to Joy on first user interaction
-let autoPlayed = false;
-function autoPlayOde() {
-  if (autoPlayed) return;
-  autoPlayed = true;
-  selectDemo('ode');
-}
-document.addEventListener('click', autoPlayOde, { once: true });
-document.addEventListener('touchstart', autoPlayOde, { once: true });
 // Pre-load Ode to Joy data so the button appears highlighted
 loadDemo('ode');
 
