@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎵 The Butt Philharmonic 🎵</title>
+<title>The Butt Philharmonic</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap');
 
@@ -447,22 +447,22 @@
 
 <div class="app">
   <div class="header">
-    <h1>🍑 The Butt Philharmonic 🎵</h1>
+    <h1>The Butt Philharmonic</h1>
     <p>A world-class ensemble of musical flatulence</p>
   </div>
 
   <div class="controls">
     <div class="upload-section">
       <div class="file-upload">
-        <label>📁 Upload MIDI</label>
+        <label>Upload MIDI</label>
         <input type="file" id="midiFile" accept=".mid,.midi">
       </div>
       <div class="demos">
-        <button class="demo-btn" id="demo-twinkle" onclick="selectDemo('twinkle')">⭐ Twinkle Twinkle</button>
-        <button class="demo-btn" id="demo-ode" onclick="selectDemo('ode')">🎶 Ode to Joy</button>
-        <button class="demo-btn" id="demo-fur" onclick="selectDemo('fur')">🎹 Für Elise</button>
-        <button class="demo-btn" id="demo-canon" onclick="selectDemo('canon')">🎻 Canon in D</button>
-        <button class="demo-btn" id="demo-birthday" onclick="selectDemo('birthday')">🎂 Happy Birthday</button>
+        <button class="demo-btn" id="demo-twinkle" onclick="selectDemo('twinkle')">Twinkle Twinkle</button>
+        <button class="demo-btn" id="demo-ode" onclick="selectDemo('ode')">Ode to Joy</button>
+        <button class="demo-btn" id="demo-fur" onclick="selectDemo('fur')">Für Elise</button>
+        <button class="demo-btn" id="demo-canon" onclick="selectDemo('canon')">Canon in D</button>
+        <button class="demo-btn" id="demo-birthday" onclick="selectDemo('birthday')">Happy Birthday</button>
 
       </div>
     </div>
@@ -477,7 +477,7 @@
         <div class="time-display" id="timeDisplay">0:00 / 0:00</div>
       </div>
       <div class="volume-control">
-        <span>🔊</span>
+        <span>Volume</span>
         <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="70">
       </div>
     </div>
@@ -486,12 +486,12 @@
   </div>
 
   <div class="stage">
-    <div class="stage-title">🎭 The Performers 🎭</div>
+    <div class="stage-title">The Performers</div>
     <div class="butt-orchestra" id="orchestra"></div>
   </div>
 
   <div class="footer">
-    <div style="margin-bottom: 12px;">🍑 The Butt Philharmonic — Where every performance is a gas 💨</div>
+    <div style="margin-bottom: 12px;">The Butt Philharmonic — Where every performance is a gas</div>
     <div class="credits">
       Sound Effects by <a href="https://pixabay.com/users/apebble-45160680/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=228244">aPebble</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=228244">Pixabay</a>
     </div>
@@ -744,7 +744,7 @@ class FartSynth {
     if (this.samplesLoaded) {
       console.log(`Loaded ${this.samples.length} fart samples`);
       const info = document.getElementById('fileInfo');
-      if (info) info.textContent += ' | 💨 Samples loaded!';
+      if (info) info.textContent += ' | Samples loaded!';
     }
   }
 
@@ -905,7 +905,7 @@ const BUTT_SKIN_COLORS = [
 ];
 
 const BUTT_SIZES = ['sm', 'md', 'md', 'lg', 'xl'];
-const MUSIC_NOTES = ['🎵', '🎶', '🎼', '♪', '♫', '💨', '☁️'];
+const MUSIC_NOTES = ['!', '*', '#', '@', '%', '&', '+', '~'];
 
 let buttElements = [];
 let numButts = 16;
@@ -1127,7 +1127,7 @@ function loadDemo(key) {
   totalDuration = time;
   songName = demo.name;
   document.getElementById('fileInfo').textContent =
-    `🎵 ${demo.name} — ${currentNotes.length} notes, ${formatTime(totalDuration)} total`;
+    `${demo.name} — ${currentNotes.length} notes, ${formatTime(totalDuration)} total`;
   document.getElementById('playBtn').disabled = false;
   document.getElementById('stopBtn').disabled = false;
   document.getElementById('progressFill').style.width = '0%';
@@ -1270,7 +1270,7 @@ document.getElementById('progressBar').addEventListener('click', (e) => {
 // Floating background notes
 function createBgNotes() {
   const container = document.getElementById('bgNotes');
-  const symbols = ['♪', '♫', '♬', '🎵', '🎶', '🍑', '💨', '🎼'];
+  const symbols = ['~', '*', '#', '@', '%', '&', '+', '!'];
   for (let i = 0; i < 20; i++) {
     const note = document.createElement('div');
     note.className = 'bg-note';
