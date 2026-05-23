@@ -463,6 +463,7 @@
         <button class="demo-btn" id="demo-fur" onclick="selectDemo('fur')">Für Elise</button>
         <button class="demo-btn" id="demo-canon" onclick="selectDemo('canon')">Canon in D</button>
         <button class="demo-btn" id="demo-birthday" onclick="selectDemo('birthday')">Happy Birthday</button>
+        <button class="demo-btn" id="demo-pirates" onclick="selectDemoMidi('pirates')">Pirates of the Caribbean</button>
 
       </div>
     </div>
@@ -1138,6 +1139,40 @@ function selectDemo(key) {
   stopPlayback();
   loadDemo(key);
   startPlayback();
+}
+
+async function selectDemoMidi(key) {
+  stopPlayback();
+  document.querySelectorAll('.demo-btn').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = document.getElementById('demo-' + key);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  const midiFiles = {
+    pirates: { name: 'Pirates of the Caribbean', url: 'midis/pirates.mid' },
+  };
+  const info = midiFiles[key];
+  if (!info) return;
+
+  try {
+    const resp = await fetch(info.url);
+    const arrayBuf = await resp.arrayBuffer();
+    const parsed = parseMidi(arrayBuf);
+    currentNotes = midiToNotes(parsed);
+    totalDuration = currentNotes.length > 0
+      ? Math.max(...currentNotes.map(n => n.start + n.duration))
+      : 0;
+    songName = info.name;
+    document.getElementById('fileInfo').textContent =
+      `📄 ${info.name} — ${currentNotes.length} notes, ${formatTime(totalDuration)} total`;
+    document.getElementById('playBtn').disabled = false;
+    document.getElementById('stopBtn').disabled = false;
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('timeDisplay').textContent = `0:00 / ${formatTime(totalDuration)}`;
+    startPlayback();
+  } catch (err) {
+    document.getElementById('fileInfo').textContent = `❌ Error loading MIDI: ${err.message}`;
+    console.error(err);
+  }
 }
 
 function togglePlay() {
