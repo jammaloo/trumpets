@@ -464,6 +464,7 @@
         <button class="demo-btn" id="demo-canon" onclick="selectDemo('canon')">Canon in D</button>
         <button class="demo-btn" id="demo-birthday" onclick="selectDemo('birthday')">Happy Birthday</button>
         <button class="demo-btn" id="demo-pirates" onclick="selectDemoMidi('pirates')">Pirates of the Caribbean</button>
+        <button class="demo-btn" id="demo-sweetdreams" onclick="selectDemoMidi('sweetdreams')">Sweet Dreams</button>
 
       </div>
     </div>
@@ -1149,6 +1150,7 @@ async function selectDemoMidi(key) {
 
   const midiFiles = {
     pirates: { name: 'Pirates of the Caribbean', url: 'midis/pirates.mid' },
+    sweetdreams: { name: 'Sweet Dreams', url: 'midis/sweet_dreams.mid' },
   };
   const info = midiFiles[key];
   if (!info) return;
